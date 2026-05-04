@@ -53,7 +53,7 @@ const CopyButton = ({ text, label }: { text: string, label?: string }) => {
   );
 };
 
-const AccountCard = ({ account, progress, remainingSeconds, tick, index }: { account: Account, progress: number, remainingSeconds: number, tick: number, index: number }) => {
+const AccountCard = ({ account, progress, remainingSeconds, tick, index, onRemove }: { account: Account, progress: number, remainingSeconds: number, tick: number, index: number, onRemove: (id: string) => void }) => {
   const [totpCode, setTotpCode] = useState<string>('');
   
   useEffect(() => {
@@ -74,10 +74,18 @@ const AccountCard = ({ account, progress, remainingSeconds, tick, index }: { acc
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 flex flex-col gap-4">
-      <div className="flex items-center">
+      <div className="flex items-center justify-between">
         <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-gray-50 border border-gray-200 text-gray-500 text-xs font-bold tracking-wide uppercase shadow-sm">
           Account #{index}
         </span>
+        <button
+          onClick={() => onRemove(account.id)}
+          className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+          aria-label="Remove account"
+          title="Remove account"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
       </div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-gray-50">
         <div className="flex items-center gap-3 overflow-hidden">
@@ -170,6 +178,10 @@ export default function App() {
     setAccounts([]);
   };
 
+  const handleRemoveAccount = (id: string) => {
+    setAccounts(prev => prev.filter(a => a.id !== id));
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f5f5] text-gray-900 font-sans selection:bg-blue-100 pb-12">
       <div className="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -230,7 +242,7 @@ export default function App() {
             
             <div className="grid gap-4 sm:gap-6">
               {accounts.map((account, index) => (
-                <AccountCard key={account.id} account={account} progress={progress} remainingSeconds={remainingSeconds} tick={tick} index={index + 1} />
+                <AccountCard key={account.id} account={account} progress={progress} remainingSeconds={remainingSeconds} tick={tick} index={index + 1} onRemove={handleRemoveAccount} />
               ))}
             </div>
           </div>
