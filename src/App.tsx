@@ -53,7 +53,7 @@ const CopyButton = ({ text, label }: { text: string, label?: string }) => {
   );
 };
 
-const AccountCard = ({ account, progress, remainingSeconds, tick }: { account: Account, progress: number, remainingSeconds: number, tick: number }) => {
+const AccountCard = ({ account, progress, remainingSeconds, tick, index }: { account: Account, progress: number, remainingSeconds: number, tick: number, index: number }) => {
   const [totpCode, setTotpCode] = useState<string>('');
   
   useEffect(() => {
@@ -74,6 +74,11 @@ const AccountCard = ({ account, progress, remainingSeconds, tick }: { account: A
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 flex flex-col gap-4">
+      <div className="flex items-center">
+        <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-gray-50 border border-gray-200 text-gray-500 text-xs font-bold tracking-wide uppercase shadow-sm">
+          Account #{index}
+        </span>
+      </div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-gray-50">
         <div className="flex items-center gap-3 overflow-hidden">
           <div className="bg-blue-50 p-2.5 rounded-xl shrink-0">
@@ -224,8 +229,8 @@ export default function App() {
             </div>
             
             <div className="grid gap-4 sm:gap-6">
-              {accounts.map((account) => (
-                <AccountCard key={account.id} account={account} progress={progress} remainingSeconds={remainingSeconds} tick={tick} />
+              {accounts.map((account, index) => (
+                <AccountCard key={account.id} account={account} progress={progress} remainingSeconds={remainingSeconds} tick={tick} index={index + 1} />
               ))}
             </div>
           </div>
