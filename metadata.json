@@ -1,0 +1,5 @@
+{
+  "name": "Authenticator Hub",
+  "description": "A mobile-optimized web app to manage and quickly copy emails, passwords, and live TOTP 2FA codes.",
+  "requestFramePermissions": []
+}
